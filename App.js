@@ -1,6 +1,10 @@
 import React from 'react'
 import { StyleSheet, Text, View } from 'react-native'
 import Dashboard from './components/Dashboard.js'
+import NewDeck from './components/NewDeck.js'
+import AddCard from './components/AddCard.js';
+import Deck from './components/Deck.js';
+import Quiz from './components/Quiz.js';
 
 export default class App extends React.Component {
     render(){
@@ -8,7 +12,7 @@ export default class App extends React.Component {
       return (
        // <Provider store={store}>
           <View style={{flex:1}}>
-          <Dashboard />
+          <AddCard />
           </View>
        // </Provider>    
       );
