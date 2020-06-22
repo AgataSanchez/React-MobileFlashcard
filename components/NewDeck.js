@@ -1,7 +1,9 @@
 import React, {Component} from 'react'
+import {connect} from 'react-redux'
 import { StyleSheet, Text, View, TextInput, TouchableOpacity, KeyboardAvoidingView } from 'react-native'
 import {FontAwesome} from '@expo/vector-icons'
-import {getDecks} from '../utils/helpers.js'
+import {getDecks, saveDeckTitle, getDeck} from '../utils/helpers.js'
+import {addDeck, receiveDecks} from '../actions/decks.js'
 
 function CreateBtn({onPress, disabled}){
     return(
@@ -10,7 +12,7 @@ function CreateBtn({onPress, disabled}){
     </TouchableOpacity>
     )
 }
-export default class NewDeck extends Component {
+class NewDeck extends Component {
     state={
         value:'',
     }
@@ -20,14 +22,18 @@ export default class NewDeck extends Component {
         })
     }
     createDeck=()=>{
-        const decks = Object.keys(getDecks())
-        
-        if(decks.includes(this.state.value))
+        /*if(decks.includes(this.state.value))
             alert('This title of deck already exists')
-        else{
+        else{*/
+            const title=this.state.value
+
+            this.props.dispatch(addDeck(title))
             //submit to AsyncStorage
+            saveDeckTitle(title)
+            
+            //console.log('decks: ' + getDecks().then((e)=>{console.log('hola: '+ e)}))
             //Navigate to  'Deck'
-        }
+        //}
     }
     render(){
       return (        
@@ -41,3 +47,5 @@ export default class NewDeck extends Component {
     }
   }
 
+
+  export default connect()(NewDeck)

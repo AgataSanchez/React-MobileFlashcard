@@ -1,7 +1,10 @@
 import React, {Component} from 'react'
-import { StyleSheet, Text, View, TextInput, TouchableOpacity, KeyboardAvoidingView } from 'react-native'
-import { MaterialCommunityIcons, MaterialIcons } from '@expo/vector-icons'; 
+import {connect} from 'react-redux'
+import { StyleSheet, Text, View, TextInput, TouchableOpacity, KeyboardAvoidingView, AsyncStorage } from 'react-native'
+import { MaterialCommunityIcons, MaterialIcons } from '@expo/vector-icons'
 import {getDecks} from '../utils/helpers.js'
+import {addCardToDeck} from '../utils/helpers.js'
+import {addCardDeck} from '../actions/decks.js'
 
 function SubmitBtn({onPress, disabled}){
     return(
@@ -10,7 +13,7 @@ function SubmitBtn({onPress, disabled}){
     </TouchableOpacity>
     )
 }
-export default class AddCard extends Component {
+class AddCard extends Component {
     state={
         question:'',
         answer:'',
@@ -25,16 +28,23 @@ export default class AddCard extends Component {
                 answer:text
             })
         }
+        
     }
     submitCard=()=>{
-        const decks = Object.keys(getDecks())
-        
-        if(decks.includes(this.state.value))
-            alert('This title of deck already exists')
-        else{
+       // const decks = Object.keys(getDecks())
+       console.log(AsyncStorage.getAllKeys())
+        const {question,answer}=this.state
+        const card={question,answer}
+        //const {title}=this.props
+        const title='Hola'
+        alert(this.state.question + this.state.answer)
+        //alert(decks)
+       this.props.dispatch(addCardDeck(title, card))
             //submit to AsyncStorage
-            //Navigate to  'Deck'
-        }
+            addCardToDeck(card, title)
+            //alert(getDecks())
+            //Navigate to 'Deck'
+        
     }
     render(){
       return (        
@@ -43,10 +53,17 @@ export default class AddCard extends Component {
             <MaterialIcons name="question-answer" size={24} color="black" />
             <TextInput placeholder='Question' onChangeText={text=>this.handleChange(text, 'q')} value={this.state.question} />
             <TextInput placeholder='Answer' onChangeText={text=>this.handleChange(text, 'a')} value={this.state.answer} />
-            <SubmitBtn onPress={this.createDeck} disabled={this.state.question==='' || this.state.answer===''}/>
+            <SubmitBtn onPress={this.submitCard} disabled={this.state.question==='' || this.state.answer===''}/>
           </KeyboardAvoidingView>
        
       );
     }
   }
 
+function mapStateToProps({title}){
+    return {
+        title,
+    }
+}
+
+export default connect(mapStateToProps)(AddCard)
