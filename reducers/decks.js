@@ -22,7 +22,7 @@ export default function decks(state={}, action){
                 ...state,
                 [action.title]:{
                     ...state[action.title],
-                    questions:[...state[action.title].questions, {question: action.card.question, answer: action.card.answer}]
+                    questions:state[action.title].questions.concat(action.card)
                 }
             }
         default: 
