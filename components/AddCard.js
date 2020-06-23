@@ -31,14 +31,12 @@ class AddCard extends Component {
         
     }
     submitCard=()=>{
-       // const decks = Object.keys(getDecks())
-       console.log(AsyncStorage.getAllKeys())
+       
         const {question,answer}=this.state
         const card={question,answer}
         //const {title}=this.props
-        const title='Hola'
-        alert(this.state.question + this.state.answer)
-        //alert(decks)
+        const title='PruebaX'
+        
        this.props.dispatch(addCardDeck(title, card))
             //submit to AsyncStorage
             addCardToDeck(card, title)

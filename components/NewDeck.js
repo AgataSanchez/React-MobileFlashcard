@@ -1,8 +1,8 @@
 import React, {Component} from 'react'
 import {connect} from 'react-redux'
-import { StyleSheet, Text, View, TextInput, TouchableOpacity, KeyboardAvoidingView } from 'react-native'
+import { StyleSheet, Text, View, TextInput, TouchableOpacity, KeyboardAvoidingView, AsyncStorage } from 'react-native'
 import {FontAwesome} from '@expo/vector-icons'
-import {getDecks, saveDeckTitle, getDeck} from '../utils/helpers.js'
+import {saveDeckTitle, getDeck} from '../utils/helpers.js'
 import {addDeck, receiveDecks} from '../actions/decks.js'
 
 function CreateBtn({onPress, disabled}){
@@ -21,19 +21,21 @@ class NewDeck extends Component {
             value:text
         })
     }
-    createDeck=()=>{
-        /*if(decks.includes(this.state.value))
-            alert('This title of deck already exists')
-        else{*/
-            const title=this.state.value
-
-            this.props.dispatch(addDeck(title))
+    createDeck= async()=>{
+        //AsyncStorage.clear()
+        const title=this.state.value
+        await getDeck(title).then((result)=>{
+            console.log(result)
+            if(result===undefined){
+                this.props.dispatch(addDeck(title))
             //submit to AsyncStorage
-            saveDeckTitle(title)
-            
-            //console.log('decks: ' + getDecks().then((e)=>{console.log('hola: '+ e)}))
+                saveDeckTitle(title)
+                
             //Navigate to  'Deck'
-        //}
+            }else 
+                alert('This title of deck already exists')
+        })
+        
     }
     render(){
       return (        

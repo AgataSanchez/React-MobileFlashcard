@@ -10,14 +10,19 @@ export default function decks(state={}, action){
         case ADD_DECK:
             return{
                 ...state,
-                [action.title]:action.title
+                [action.title]:{
+                    title: action.title,
+                    questions:[]
+                }
+                    
             }
         case ADD_CARD_DECK:
+            console.log('ADD_CARD_DECK->' + JSON.stringify(state) + ' ' + JSON.stringify(action[action.title]))
             return{
                 ...state,
                 [action.title]:{
                     ...state[action.title],
-                    questions:state[action.title].questions.concat(action.card)
+                    questions:[...state[action.title].questions, {question: action.card.question, answer: action.card.answer}]
                 }
             }
         default: 
