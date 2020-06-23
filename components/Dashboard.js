@@ -1,28 +1,38 @@
 import React, {Component} from 'react'
-import { StyleSheet, Text, View } from 'react-native'
+import { StyleSheet, Text, View, TouchableOpacity } from 'react-native'
 import {IonIcons} from '@expo/vector-icons'
-import {getDecks} from '../utils/helpers.js'
-
-export default class Dashboard extends Component {
+import {getDecks/*, removeDeck*/} from '../utils/helpers.js'
+import { connect } from 'react-redux'
+import {removeDeck} from '../actions/decks.js'
+class Dashboard extends Component {
     state={
         decks:{}
     }
     componentDidMount(){
-        const decksObj= getDecks();
-        this.setState({
-            decks:decksObj
-        })
+        
+         getDecks().then((result)=>{
+            this.setState({
+                decks:result
+            })
+         })
+       
+    }
+    handlePress(title){
+        
+        //Navigate to 'Deck'
+        this.props.navigation.navigate('DeckView', {title:title} )
     }
     render(){
       const {decks}=this.state
+      
       return (        
-          <View style={{flex:1, paddingTop:30, justifyContent: 'center'}}>
-            {Object.keys(decks).map((key)=>{
+          <View style={{flex:1, paddingTop:30, justifyContent: 'space-between', alignItems:'center'}}>
+            {Object.keys(decks).map((deckT)=>{
                 return(
-                    <View key={key}>
-                        <Text>{decks[key].title}</Text>
-                        <Text>{decks[key].questions.length}</Text>
-                    </View>
+                    <TouchableOpacity value={deckT} key={deckT} onPress={()=>this.handlePress(deckT)}  style={{paddingBottom:10, alignItems:'center'}}>
+                        <Text>{deckT}</Text>
+                        <Text>{decks[deckT].questions.length} cards</Text>
+                    </TouchableOpacity>
                 )
             })}
           </View>
@@ -31,3 +41,4 @@ export default class Dashboard extends Component {
     }
   }
 
+export default connect()(Dashboard)

@@ -19,6 +19,12 @@ function StartQuiz({onPress}){
     )
 }
 export default class Deck extends Component {
+   static navigationOptions=({navigation})=>{
+    const {title}=navigation.state.params
+    return {
+        titlte: title
+    }
+   }
    
     handleAddCard=()=>{
         //Navigate to 'Add Card'

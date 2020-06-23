@@ -20,16 +20,7 @@ export async function saveDeckTitle(title){
             title: title,
             questions:[],
           }
-        }))/*await getDeck(title).then((result)=>{
-    
-    if(result===undefined){//The deck doesnt exist*/
-      /*.then( getDeck(title).then((r)=> console.log('R: ' + r)))*/
-        /*return true
-    }else
-      return false*/
-         
-  //})          
-        
+        }))
 }
 
 export async function removeDeck(title){
@@ -43,10 +34,10 @@ export async function removeDeck(title){
 
 export async function addCardToDeck(card, title){
   return await AsyncStorage.getItem(DECKS_STORAGE_KEY).then((decks)=>{
-    console.log(decks)
-      const questions=decks[title].questions ? JSON.parse(decks[title].questions) : []
+    const data=JSON.parse(decks)
+      const questions=data[title].questions ? data[title].questions : []
       questions.push(card)
-      decks[title].questions=questions
-      AsyncStorage.mergeItem(DECKS_STORAGE_KEY,JSON.stringify(decks[title]))
+      data[title].questions=questions
+      AsyncStorage.mergeItem(DECKS_STORAGE_KEY,JSON.stringify(data[title]))
   })
 }

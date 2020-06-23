@@ -25,7 +25,6 @@ class NewDeck extends Component {
         //AsyncStorage.clear()
         const title=this.state.value
         await getDeck(title).then((result)=>{
-            console.log(result)
             if(result===undefined){
                 this.props.dispatch(addDeck(title))
             //submit to AsyncStorage
@@ -34,6 +33,7 @@ class NewDeck extends Component {
             //Navigate to  'Deck'
             }else 
                 alert('This title of deck already exists')
+            this.setState({value:''})
         })
         
     }
