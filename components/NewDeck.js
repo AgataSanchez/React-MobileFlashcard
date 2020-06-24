@@ -22,7 +22,7 @@ class NewDeck extends Component {
         })
     }
     createDeck= async()=>{
-        //AsyncStorage.clear()
+      
         const title=this.state.value
         await getDeck(title).then((result)=>{
             if(result===undefined){
@@ -31,6 +31,7 @@ class NewDeck extends Component {
                 saveDeckTitle(title)
                 
             //Navigate to  'Deck'
+            this.props.navigation.navigate('Deck', {title:title})
             }else 
                 alert('This title of deck already exists')
             this.setState({value:''})

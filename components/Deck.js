@@ -6,14 +6,14 @@ import {getDeck} from '../utils/helpers.js'
 
 function AddCard({navigation}){
     return(
-    <TouchableOpacity onPress={navigation.navigate('Add Card')}>
+    <TouchableOpacity onPress={()=>navigation.navigate('Add Card')}>
         <Text><MaterialCommunityIcons name="cards" size={24} color="black" />Add Card</Text>
     </TouchableOpacity>
     )
 }
 function StartQuiz({navigation}){
     return(
-        <TouchableOpacity onPress={navigation.navigate('Quiz')}>
+        <TouchableOpacity onPress={()=>navigation.navigate('Quiz')}>
             <Text><MaterialIcons name="question-answer" size={24} color="black" />Start Quiz</Text>
         </TouchableOpacity>
     )

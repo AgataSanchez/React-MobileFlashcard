@@ -1,45 +1,43 @@
 import React, {Component} from 'react'
-import { StyleSheet, Text, View, TouchableOpacity } from 'react-native'
+import { StyleSheet, Text, ScrollView, TouchableOpacity } from 'react-native'
 import {IonIcons} from '@expo/vector-icons'
 import {getDecks} from '../utils/helpers.js'
 import { connect } from 'react-redux'
-import {removeDeck} from '../actions/decks.js'
+import {receiveDecks} from '../actions/decks.js'
+
 class Dashboard extends Component {
-    state={
-        decks:{}
-    }
+    
     componentDidMount(){
-        
-         getDecks().then((result)=>{
-            if(result!==null){
-                this.setState({
-                    decks:result
-                })
-            }
-         })
+        getDecks().then((decks)=> {
+            this.props.dispatch(receiveDecks(decks))
+        })
        
     }
     handlePress(title){
-        console.log('Dashboard')
         //Navigate to 'Deck'
         this.props.navigation.navigate('Deck', {title:title} )
     }
     render(){
-      const {decks}=this.state
+      const decks=this.props.decks
+        console.log(decks)
       return (        
-          <View style={{flex:1, paddingTop:30, justifyContent: 'space-between', alignItems:'center'}}>
+          <ScrollView contentContainerStyle={{flex:1, paddingTop:20, justifyContent:'space-between'}}>
             {Object.keys(decks).map((deckT)=>{
                 return(
-                    <TouchableOpacity value={deckT} key={deckT} onPress={()=>this.handlePress(deckT)}  style={{paddingBottom:10, alignItems:'center'}}>
-                        <Text>{deckT}</Text>
-                        <Text>{decks[deckT].questions.length} cards</Text>
+                    <TouchableOpacity value={deckT} key={deckT} onPress={()=>this.handlePress(deckT)}  style={{paddingBottom:10, alignItems:'center'/*, borderWidth:2, borderStyle:'dotted', borderColor:'#72BFE1'*/}}>
+                        <Text style={{fontSize:20}}>{deckT}</Text>
+                        <Text style={{color: '#72BFE1'}}>{decks[deckT].questions.length} cards</Text>
                     </TouchableOpacity>
                 )
             })}
-          </View>
+          </ScrollView>
        
       );
     }
   }
-
-export default connect()(Dashboard)
+function mapStateToProps(decks){
+    return{
+        decks
+    }
+}
+export default connect(mapStateToProps)(Dashboard)

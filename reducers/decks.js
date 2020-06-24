@@ -1,5 +1,5 @@
 import {RECEIVE_DECKS,ADD_CARD_DECK,ADD_DECK,REMOVE_DECK} from '../actions/decks.js'
-const initialState = { 
+/*const initialState = { 
     "React": {
     title: 'React',
     questions: [
@@ -21,11 +21,10 @@ const initialState = {
         answer: 'The combination of a function and the lexical environment within which that function was declared.'
       }
     ]
-  },
-  "PruebaX": {title: "PruebaX", questions:[]}
-}
+  }
+}*/
 
-export default function decks(state=initialState, action){
+export default function decks(state=/*initialState*/{}, action){
     switch(action.type){
         case RECEIVE_DECKS:
             return {

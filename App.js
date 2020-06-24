@@ -47,7 +47,6 @@ function Home(){
 }
 
 
-
 export default class App extends Component {
     render(){
       const store = createStore(reducer, middlweare)
@@ -58,10 +57,10 @@ export default class App extends Component {
             <DeckStatusBar backgroundColor='#72BFE1' barStyle='light-content'/>
             <NavigationContainer>
             <Stack.Navigator>
-              <Stack.Screen name='Home' component={Home}/>
-              <Stack.Screen name='Deck' component={Deck}/>
-              <Stack.Screen name='Add Card' component={AddCard}/>
-              <Stack.Screen name='Quiz' component={Quiz}/>       
+              <Stack.Screen name='Home' component={Home} options={{ headerStyle:{backgroundColor:'#72BFE1'}, title: 'FlashCards', headerTintColor:'white'}}/>
+              <Stack.Screen name='Deck' component={Deck} options={{headerStyle:{backgroundColor:'#72BFE1'}, headerTintColor:'white'}}/>
+              <Stack.Screen name='Add Card' component={AddCard} options={{headerStyle:{backgroundColor:'#72BFE1'}, headerTintColor:'white'}}/>
+              <Stack.Screen name='Quiz' component={Quiz} options={{headerStyle:{backgroundColor:'#72BFE1'}, headerTintColor:'white'}}/>       
               </Stack.Navigator>
             </NavigationContainer>
           </View>
