@@ -4,43 +4,49 @@ import {MaterialCommunityIcons, MaterialIcons} from '@expo/vector-icons'
 import {getDeck} from '../utils/helpers.js'
 
 
-function AddCard({onPress}){
+function AddCard({navigation}){
     return(
-    <TouchableOpacity onPress={onPress}>
+    <TouchableOpacity onPress={navigation.navigate('Add Card')}>
         <Text><MaterialCommunityIcons name="cards" size={24} color="black" />Add Card</Text>
     </TouchableOpacity>
     )
 }
-function StartQuiz({onPress}){
+function StartQuiz({navigation}){
     return(
-        <TouchableOpacity onPress={onPress}>
+        <TouchableOpacity onPress={navigation.navigate('Quiz')}>
             <Text><MaterialIcons name="question-answer" size={24} color="black" />Start Quiz</Text>
         </TouchableOpacity>
     )
 }
 export default class Deck extends Component {
-   static navigationOptions=({navigation})=>{
-    const {title}=navigation.state.params
-    return {
-        titlte: title
+    state={
+        questions:[]
     }
+    componentDidMount(){
+        getDeck(this.props.route.params.title).then((questionsDeck)=>{
+            this.setState({
+                questions:questionsDeck.questions
+            })
+        }
+        )
+    }
+   setNavigationOptions=(title)=>{
+        this.props.navigation.setOptions({
+            title: title
+        });
    }
    
-    handleAddCard=()=>{
-        //Navigate to 'Add Card'
-    }
-    handleStart=()=>{
-        //Navigate to 'Start Quiz'
-    }
     render(){
-        const {title, questions}= getDeck('JavaScript')
-        
+        const {title}= this.props.route.params
+        const {questions}=this.state
+        this.setNavigationOptions(title)
+
       return (        
           <View style={{flex:1, paddingTop:30, justifyContent: 'center', alignItems:'center'}}>
             <Text>{title}</Text>
             <Text>{questions.length} cards</Text>
-            <AddCard onPress={this.handleAddCard()}/>
-            <StartQuiz onPress={this.handleStart()}/>
+            <AddCard navigation={this.props.navigation}/>
+            <StartQuiz navigation={this.props.navigation}/>
           </View>
        
       );

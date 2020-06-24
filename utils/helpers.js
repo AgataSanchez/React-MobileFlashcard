@@ -9,7 +9,7 @@ export async function getDecks(){
 
 export async function getDeck(id){
    return await getDecks().then((result)=>{
-      const data = result!==null ? JSON.stringify(result[id]): undefined
+      const data = result!==null ? result[id]: undefined
         return data
     })
 }

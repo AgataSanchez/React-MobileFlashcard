@@ -1,7 +1,7 @@
 import React, {Component} from 'react'
 import { StyleSheet, Text, View, TouchableOpacity } from 'react-native'
 import {IonIcons} from '@expo/vector-icons'
-import {getDecks/*, removeDeck*/} from '../utils/helpers.js'
+import {getDecks} from '../utils/helpers.js'
 import { connect } from 'react-redux'
 import {removeDeck} from '../actions/decks.js'
 class Dashboard extends Component {
@@ -20,13 +20,12 @@ class Dashboard extends Component {
        
     }
     handlePress(title){
-        
+        console.log('Dashboard')
         //Navigate to 'Deck'
-        this.props.navigation.navigate('DeckView', {title:title} )
+        this.props.navigation.navigate('Deck', {title:title} )
     }
     render(){
       const {decks}=this.state
-      console.log(decks)
       return (        
           <View style={{flex:1, paddingTop:30, justifyContent: 'space-between', alignItems:'center'}}>
             {Object.keys(decks).map((deckT)=>{

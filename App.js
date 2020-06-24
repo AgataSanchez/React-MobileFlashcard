@@ -10,11 +10,17 @@ import {Provider} from 'react-redux'
 import reducer from './reducers/decks.js'
 import middlweare from './middleware'
 import { NavigationContainer} from '@react-navigation/native'
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
+import { createBottomTabNavigator  } from '@react-navigation/bottom-tabs'
 import { createStackNavigator} from '@react-navigation/stack'
 
-import {MaterialIcons} from '@expo/vector-icons'
+import {MaterialIcons, Ionicons} from '@expo/vector-icons'
 import Constants  from 'expo-constants'
+
+
+const Tab=createBottomTabNavigator()
+
+const Stack = createStackNavigator()
+
 
 function DeckStatusBar({backgroundColor, ...props}){
   return (
@@ -23,9 +29,24 @@ function DeckStatusBar({backgroundColor, ...props}){
     </View>
   )
 }
-const Tab=createBottomTabNavigator()
 
-const Stack = createStackNavigator()
+function Home(){
+  return(
+    <Tab.Navigator 
+      tabBarOptions={{ 
+        activeTintColor: '#72BFE1',
+        inactiveTintColor: 'black',
+      }} 
+        >
+      <Tab.Screen name='Decks' component={Dashboard} options={{
+        tabBarIcon:({color})=><MaterialIcons name="dashboard" size={24} color={color} /> }}/>
+      <Tab.Screen name='Add Deck' component={NewDeck} options={{
+        tabBarIcon:({color})=><Ionicons name="ios-add" size={24} color={color} /> }}/>
+    </Tab.Navigator>
+  )
+}
+
+
 
 export default class App extends Component {
     render(){
@@ -37,15 +58,11 @@ export default class App extends Component {
             <DeckStatusBar backgroundColor='#72BFE1' barStyle='light-content'/>
             <NavigationContainer>
             <Stack.Navigator>
-              <Stack.Screen name='Dashboard' component={Dashboard}/>
+              <Stack.Screen name='Home' component={Home}/>
               <Stack.Screen name='Deck' component={Deck}/>
-              <Stack.Screen name='AddCard' component={AddCard}/>
-              <Stack.Screen name='Quiz' component={Quiz}/>
-            </Stack.Navigator>
-            <Tab.Navigator>
-              <Tab.Screen name='Decks' component={Dashboard}/>
-              <Tab.Screen name='Add Deck' component={NewDeck}/>
-            </Tab.Navigator>
+              <Stack.Screen name='Add Card' component={AddCard}/>
+              <Stack.Screen name='Quiz' component={Quiz}/>       
+              </Stack.Navigator>
             </NavigationContainer>
           </View>
         </Provider>    
