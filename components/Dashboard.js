@@ -11,9 +11,11 @@ class Dashboard extends Component {
     componentDidMount(){
         
          getDecks().then((result)=>{
-            this.setState({
-                decks:result
-            })
+            if(result!==null){
+                this.setState({
+                    decks:result
+                })
+            }
          })
        
     }
@@ -24,7 +26,7 @@ class Dashboard extends Component {
     }
     render(){
       const {decks}=this.state
-      
+      console.log(decks)
       return (        
           <View style={{flex:1, paddingTop:30, justifyContent: 'space-between', alignItems:'center'}}>
             {Object.keys(decks).map((deckT)=>{
