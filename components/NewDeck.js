@@ -1,14 +1,14 @@
 import React, {Component} from 'react'
 import {connect} from 'react-redux'
 import { StyleSheet, Text, View, TextInput, TouchableOpacity, KeyboardAvoidingView } from 'react-native'
-import {FontAwesome} from '@expo/vector-icons'
+import {FontAwesome, MaterialIcons} from '@expo/vector-icons'
 import {saveDeckTitle, getDeck} from '../utils/helpers.js'
-import {addDeck, receiveDecks} from '../actions/decks.js'
+import {addDeck} from '../actions/decks.js'
 
 function CreateBtn({onPress, disabled}){
     return(
-    <TouchableOpacity onPress={onPress} disabled={disabled}>
-        <Text><FontAwesome name="question-circle-o" size={24} color="black" />Create Deck</Text>
+    <TouchableOpacity onPress={onPress} disabled={disabled} style={[styles.Buttons, {opacity: disabled? 0.3 : 1}]}>
+        <Text style={styles.ButtonTexts}><MaterialIcons name="library-add" size={24} color="white" />Create Deck</Text>
     </TouchableOpacity>
     )
 }
@@ -28,13 +28,13 @@ class NewDeck extends Component {
         await getDeck(title).then((result)=>{
             if(result===undefined){
                 this.props.dispatch(addDeck(title))
-            //submit to AsyncStorage
+            
                 saveDeckTitle(title)
                 
-            //Navigate to  'Deck'
-            this.props.navigation.navigate('Deck', {title:title})
+                this.props.navigation.navigate('Deck', {title:title})
             }else 
                 alert('This title of deck already exists')
+
             this.setState({value:''})
         })
         
@@ -42,16 +42,60 @@ class NewDeck extends Component {
     render(){
       return (        
         
-          <KeyboardAvoidingView behavior='padding' style={{flex:1, paddingTop:30, justifyContent: 'center'}}>
-            <Text>What is the title of your new deck <FontAwesome name="question" size={20} color="black" /> </Text>
-            <TextInput placeholder='Deck Title' onChangeText={text=>this.handleChange(text)} value={this.state.value} />
-            <CreateBtn onPress={this.createDeck} disabled={this.state.value===''}/>
+          <KeyboardAvoidingView behavior='padding' style={styles.ViewContent}>
+            <Text style={styles.Texts}>What is the title of your new deck <FontAwesome name="question" size={40} color="black" /> </Text>
+            <View style={{alignItems:'center'}}>
+                <TextInput style={styles.InputTexts}placeholder='Deck Title' onChangeText={text=>this.handleChange(text)} value={this.state.value} />
+            </View>
+            <View style={styles.ViewButtons}>
+                <CreateBtn onPress={this.createDeck} disabled={this.state.value===''}/>
+            </View>
           </KeyboardAvoidingView>
         
        
       );
     }
   }
+
+
+const styles=StyleSheet.create({
+    ViewContent:{
+        flex:1, 
+        paddingTop:30, 
+        justifyContent: 'space-between'
+    },
+    Texts:{
+        paddingBottom: 30,
+        fontSize:30,
+        alignItems:'center',
+        textAlign: 'center'
+    },
+    InputTexts:{
+        borderWidth:2,
+        borderRadius:3,
+        fontSize:20,
+        width:300,
+        textAlign:'center'
+    },  
+    ViewButtons:{
+       justifyContent:'flex-end',
+       alignItems:'center',
+       paddingBottom:20,
+    },
+    Buttons:{ 
+        marginBottom: 10,
+        borderWidth:2,
+        borderColor:'#44A7D6',
+        backgroundColor:'#44A7D6',
+        width:250,
+        alignItems: 'center',
+        borderRadius:10
+    },
+    ButtonTexts:{
+        color:'white',
+        fontSize:20,
+    }
+})
 
 
   export default connect()(NewDeck)

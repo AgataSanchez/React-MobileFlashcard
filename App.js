@@ -36,12 +36,15 @@ function Home(){
       tabBarOptions={{ 
         activeTintColor: '#72BFE1',
         inactiveTintColor: 'black',
+        labelStyle:{
+          fontSize:15
+        }
       }} 
         >
       <Tab.Screen name='Decks' component={Dashboard} options={{
-        tabBarIcon:({color})=><MaterialIcons name="dashboard" size={24} color={color} /> }}/>
+        tabBarIcon:({color})=><MaterialIcons name="dashboard" size={30} color={color} /> }}/>
       <Tab.Screen name='Add Deck' component={NewDeck} options={{
-        tabBarIcon:({color})=><Ionicons name="ios-add" size={24} color={color} /> }}/>
+        tabBarIcon:({color})=><Ionicons name="ios-add" size={30} color={color} /> }}/>
     </Tab.Navigator>
   )
 }

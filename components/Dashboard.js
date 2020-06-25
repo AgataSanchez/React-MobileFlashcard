@@ -20,12 +20,12 @@ class Dashboard extends Component {
     render(){
       const decks=this.props.decks
       return (        
-          <ScrollView contentContainerStyle={{flex:1, paddingTop:20, justifyContent:'space-between'}}>
+          <ScrollView contentContainerStyle={{flex:1, paddingTop:20, justifyContent:'start'}}>
             {Object.keys(decks).map((deckT)=>{
                 return(
-                    <TouchableOpacity value={deckT} key={deckT} onPress={()=>this.handlePress(deckT)}  style={{paddingBottom:10, alignItems:'center'/*, borderWidth:2, borderStyle:'dotted', borderColor:'#72BFE1'*/}}>
-                        <Text style={{fontSize:20}}>{deckT}</Text>
-                        <Text style={{color: '#72BFE1'}}>{decks[deckT].questions!==undefined ? decks[deckT].questions.length: 0} cards</Text>
+                    <TouchableOpacity value={deckT} key={deckT} onPress={()=>this.handlePress(deckT)}  style={{paddingBottom:20, alignItems:'center'}}>
+                        <Text style={{fontSize:25}}>{deckT}</Text>
+                        <Text style={{color: '#72BFE1', fontSize:15}}>{decks[deckT].questions!==undefined ? decks[deckT].questions.length: 0} cards</Text>
                     </TouchableOpacity>
                 )
             })}

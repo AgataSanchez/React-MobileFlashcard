@@ -1,13 +1,14 @@
 import React, {Component} from 'react'
 import { StyleSheet, Text, View, TouchableOpacity } from 'react-native'
-import {Ionicons, Fontisto, FontAwesome} from '@expo/vector-icons'
-import {getDecks} from '../utils/helpers.js'
+import {Ionicons, MaterialCommunityIcons, FontAwesome} from '@expo/vector-icons'
 import { connect } from 'react-redux'
 
 function CustomBtn({onPress, textBtn}){
     return(
-        <TouchableOpacity onPress={onPress}>
-        <Text>{textBtn}</Text>
+        <TouchableOpacity onPress={onPress} style={[textBtn==='Answer' || textBtn==='Question' ? null : styles.Buttons,
+        { borderColor: textBtn==='Correct' ? '#6ECD7A': textBtn==='Incorrect' ? '#F04C65' : null ,
+        backgroundColor:textBtn==='Correct' ? '#6ECD7A': textBtn==='Incorrect' ? '#F04C65' : null }]}>
+        <Text style={[styles.ButtonTexts, {color: textBtn==='Answer' || textBtn==='Question' ? '#4C6AF0' : 'white'}]}>{textBtn}</Text>
     </TouchableOpacity>
     )
 }
@@ -22,7 +23,6 @@ class Quiz extends Component {
     handlePressBtn=()=>{
         let text, textQorA
         const currentQ=this.props.questions[this.state.numberQ-1]
-        console.log(currentQ)
         if(this.state.textBtn==='Answer'){
             text='Question'
             textQorA=currentQ.answer
@@ -55,37 +55,84 @@ class Quiz extends Component {
         const {questions} = this.props
         const total=questions.length
         let percentage=((this.state.correct/total)*100).toFixed(0)
+        let color=percentage<40 ? "#F04C65": percentage<70 ? "#6ECDC0" : "#6ECD7A"
        
         if(this.props.questions.length===0){
             return (
-                <View style={{flex:1, paddingTop:30, justifyContent: 'center', alignItems:'center'}}>
-                    <Fontisto name="confused" size={100} color="black" />
-                    <Text>Sorry, you cannot take a quiz because there are no cards in the deck</Text>
+                <View style={[styles.ViewContent, {justifyContent: 'center'}]}>
+                    <MaterialCommunityIcons name="emoticon-sad-outline" size={50} color="#6ECDC0" />
+                    <Text style={styles.Texts}>Sorry, you cannot take a quiz because there are no cards in the deck!</Text>
+                    <Text style={styles.Texts}> Go back and add it </Text>
                 </View>
             )
         }
         if(this.state.numberQ>questions.length){//Finished the quiz
             return(
-                <View style={{flex:1, paddingTop:30, justifyContent: 'center'}}>
-                    <Text>Congratulations! You have finished the quiz. Its percentage of correct answers
-                        has been of a:</Text>
-                    <Text> {percentage}<FontAwesome name="percent" size={24} color="black" /></Text>
-                    {percentage<40 ? <Ionicons name="ios-sad" size={24} color="black" />: percentage>50 ? <Ionicons name="ios-happy" size={24} color="black" />:<FontAwesome name="meh-o" size={24} color="black" />}
+                <View style={[styles.ViewContent, {justifyContent: 'space-between'}]}>
+                    <View style={[styles.ViewContentTexts, {justifyContent:'space-between'}]}>
+                        <Text style={styles.Texts}>Congratulations! You have finished the quiz. Its percentage of correct answers
+                            has been of a:</Text>
+                        <Text style={[styles.Texts, {fontSize:100, color:color}]}> {percentage}<FontAwesome name="percent" size={100} color={color}/></Text>
+                        {percentage<40 ? <Ionicons name="ios-sad" size={100} color={color} />: percentage<70 
+                        ? <FontAwesome name="meh-o" size={100} color={color} />
+                        :<Ionicons name="ios-happy" size={100} color={color} />
+                        }
+                        
+                    </View>
                 </View>
             )
         }
         return (        
-            <View style={{flex:1, paddingTop:30, justifyContent: 'center'}}>
-                <Text>{this.state.numberQ}/{total}</Text>
-                <Text>{this.state.textQorA}</Text>
-                <CustomBtn onPress={this.handlePressBtn} textBtn={this.state.textBtn}/>
-                <CustomBtn onPress={()=>this.handleCorrectIncorrect(true)} value={true} textBtn='Correct'/>
-                <CustomBtn onPress={()=>this.handleCorrectIncorrect(false)} value={false} textBtn='Incorrect'/>
+            <View style={[styles.ViewContent, {justifyContent: 'space-between'}]}>
+                <View style={styles.ViewContentTexts}>
+                    <Text style={styles.Texts}>{this.state.numberQ}/{total}</Text>
+                    <Text style={styles.Texts}>{this.state.textQorA}</Text>
+                    <CustomBtn onPress={this.handlePressBtn} textBtn={this.state.textBtn}/>
+                </View>
+                <View style={styles.ViewButtons}>
+                    <CustomBtn onPress={()=>this.handleCorrectIncorrect(true)} value={true} textBtn='Correct'/>
+                    <CustomBtn onPress={()=>this.handleCorrectIncorrect(false)} value={false} textBtn='Incorrect'/>
+                </View>
             </View>
        
         );
     }
   }
+
+  
+const styles=StyleSheet.create({
+    ViewContent:{
+        flex:1, 
+        paddingTop:30, 
+        alignItems:'center'
+    },
+    Texts:{
+        paddingBottom: 30,
+        padding:'auto',
+        fontSize:30,
+        alignItems:'center',
+        textAlign: 'center'
+    },
+    ViewContentTexts:{
+        justifyContent:'center',
+        alignItems:'center'
+    },
+    ViewButtons:{
+       justifyContent:'flex-end'
+    },
+    Buttons:{ 
+        marginBottom: 30,
+        borderWidth:2,
+        width:250,
+        alignItems: 'center',
+        borderRadius:10
+    },
+    ButtonTexts:{
+        color:'white',
+        fontSize:25,
+    }
+})
+
 
 function mapStateToProps(deck, params){
     const {title}=params.route.params
