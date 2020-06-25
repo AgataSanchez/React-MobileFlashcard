@@ -2,7 +2,7 @@ import React, {Component} from 'react'
 import {connect} from 'react-redux'
 import { StyleSheet, Text, View, TextInput, TouchableOpacity, KeyboardAvoidingView, AsyncStorage } from 'react-native'
 import { MaterialCommunityIcons, MaterialIcons } from '@expo/vector-icons'
-import {getDecks} from '../utils/helpers.js'
+import {getDecks, getDeck} from '../utils/helpers.js'
 import {addCardToDeck} from '../utils/helpers.js'
 import {addCardDeck} from '../actions/decks.js'
 
@@ -30,18 +30,16 @@ class AddCard extends Component {
         }
         
     }
-    submitCard=()=>{
+    submitCard=async()=>{
        
         const {question,answer}=this.state
         const card={question,answer}
-        //const {title}=this.props
-        const title='PruebaX'
-        
+        const {title}=this.props.route.params
        this.props.dispatch(addCardDeck(title, card))
             //submit to AsyncStorage
-            addCardToDeck(card, title)
-            //alert(getDecks())
+            await addCardToDeck(card, title).then(this.props.navigation.goBack())
             //Navigate to 'Deck'
+            
         
     }
     render(){
@@ -58,10 +56,5 @@ class AddCard extends Component {
     }
   }
 
-function mapStateToProps({title}){
-    return {
-        title,
-    }
-}
 
-export default connect(mapStateToProps)(AddCard)
+export default connect()(AddCard)

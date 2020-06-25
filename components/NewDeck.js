@@ -1,6 +1,6 @@
 import React, {Component} from 'react'
 import {connect} from 'react-redux'
-import { StyleSheet, Text, View, TextInput, TouchableOpacity, KeyboardAvoidingView, AsyncStorage } from 'react-native'
+import { StyleSheet, Text, View, TextInput, TouchableOpacity, KeyboardAvoidingView } from 'react-native'
 import {FontAwesome} from '@expo/vector-icons'
 import {saveDeckTitle, getDeck} from '../utils/helpers.js'
 import {addDeck, receiveDecks} from '../actions/decks.js'
@@ -12,6 +12,7 @@ function CreateBtn({onPress, disabled}){
     </TouchableOpacity>
     )
 }
+
 class NewDeck extends Component {
     state={
         value:'',
@@ -40,11 +41,13 @@ class NewDeck extends Component {
     }
     render(){
       return (        
+        
           <KeyboardAvoidingView behavior='padding' style={{flex:1, paddingTop:30, justifyContent: 'center'}}>
             <Text>What is the title of your new deck <FontAwesome name="question" size={20} color="black" /> </Text>
             <TextInput placeholder='Deck Title' onChangeText={text=>this.handleChange(text)} value={this.state.value} />
             <CreateBtn onPress={this.createDeck} disabled={this.state.value===''}/>
           </KeyboardAvoidingView>
+        
        
       );
     }

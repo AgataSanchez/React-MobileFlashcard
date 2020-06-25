@@ -10,7 +10,7 @@ export function addDeck(title){
     }
 }
 
-export function removeDeck(title){
+export function removeADeck(title){
     return{
         type: REMOVE_DECK,
         title
