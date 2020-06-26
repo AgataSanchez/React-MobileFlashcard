@@ -2,6 +2,7 @@ import React, {Component} from 'react'
 import { StyleSheet, Text, View, TouchableOpacity, Platform } from 'react-native'
 import {Ionicons, MaterialCommunityIcons, FontAwesome} from '@expo/vector-icons'
 import { connect } from 'react-redux'
+import {clearLocalNotification, setLocalNotification} from '../utils/helpers.js'
 
 function CustomBtn({onPress, textBtn}){
     return(
@@ -60,9 +61,13 @@ class Quiz extends Component {
         this.setState({
             correct:numberCorrect, 
             numberQ,
-            textQorA: numberQ>this.props.questions.length ? '' : this.props.questions[numberQ-1].question
+            textQorA: numberQ>this.props.questions.length ? '' : this.props.questions[numberQ-1].question,
+            textBtn: 'Answer'
         })
         
+    }
+    handleNotification=()=>{
+        clearLocalNotification().then(setLocalNotification)
     }
     render(){
         const {questions} = this.props
@@ -82,9 +87,10 @@ class Quiz extends Component {
             )
         }
         if(this.state.numberQ>questions.length){//Finished the quiz
+            this.handleNotification()
             return(
-                <View style={[styles.ViewContent, {justifyContent: 'space-between'}]}>
-                    <View style={[styles.ViewContentTexts, {justifyContent:'space-between'}]}>
+                <View style={[styles.ViewContent, {justifyContent: 'center'}]}>
+                    <View style={[styles.ViewContentTexts, {justifyContent:'center'}]}>
                         <Text style={styles.Texts}>Congratulations! You have finished the quiz. 
                         Its percentage of correct answers has been of a:</Text>
                         <Text style={[styles.Texts, {fontSize:100, color:color}]}> 

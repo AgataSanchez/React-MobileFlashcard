@@ -1,6 +1,6 @@
 import React, {Component} from 'react'
 import {connect} from 'react-redux'
-import { StyleSheet, Text, View, TextInput, TouchableOpacity, KeyboardAvoidingView, Platform, TouchableWithoutFeedback } from 'react-native'
+import { StyleSheet, Text, View, TextInput, TouchableOpacity, KeyboardAvoidingView, Platform, TouchableWithoutFeedback, Keyboard } from 'react-native'
 import {FontAwesome, MaterialIcons, Ionicons} from '@expo/vector-icons'
 import {saveDeckTitle, getDeck} from '../utils/helpers.js'
 import {addDeck} from '../actions/decks.js'
@@ -43,8 +43,8 @@ class NewDeck extends Component {
     }
     render(){
       return (        
-        <TouchableWithoutFeedback>
-          <KeyboardAvoidingView {...Platform.OS==='ios' ? behavior='padding' : null} style={styles.ViewContent}>
+        <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
+          <KeyboardAvoidingView  behavior= {Platform.OS==='ios' ? 'padding' : null} style={styles.ViewContent}>
             <Text style={styles.Texts}>What is the title of your new deck {Platform.OS==='ios' 
             ? <FontAwesome name="question" size={40} color="black" />
             : <Ionicons name="md-help" size={24} color="black" />} </Text>
@@ -87,6 +87,7 @@ const styles=StyleSheet.create({
        paddingBottom:20,
     },
     Buttons:{ 
+        marginTop:5,
         marginBottom: 10,
         borderWidth:2,
         borderColor:'#44A7D6',

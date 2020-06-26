@@ -13,9 +13,9 @@ import { NavigationContainer} from '@react-navigation/native'
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
 import { createStackNavigator} from '@react-navigation/stack'
 import {createMaterialTopTabNavigator} from '@react-navigation/material-top-tabs'
-
 import {MaterialIcons, Ionicons} from '@expo/vector-icons'
 import Constants  from 'expo-constants'
+import {setLocalNotification} from './utils/helpers.js'
 
 
 const Tab= Platform.OS==='ios' ? createBottomTabNavigator() : createMaterialTopTabNavigator()
@@ -58,6 +58,9 @@ function Home(){
 
 
 export default class App extends Component {
+  componentDidMount(){
+    setLocalNotification()
+  }
     render(){
       const store = createStore(reducer, middlweare)
       return (

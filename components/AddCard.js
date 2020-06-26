@@ -1,6 +1,6 @@
 import React, {Component} from 'react'
 import {connect} from 'react-redux'
-import { StyleSheet, Text, View, TextInput, TouchableOpacity, KeyboardAvoidingView, Platform, TouchableWithoutFeedback } from 'react-native'
+import { StyleSheet, Text, View, TextInput, TouchableOpacity, KeyboardAvoidingView, Platform, TouchableWithoutFeedback, Keyboard } from 'react-native'
 import { MaterialCommunityIcons, MaterialIcons, FontAwesome, Ionicons } from '@expo/vector-icons'
 import {addCardToDeck} from '../utils/helpers.js'
 import {addCardDeck} from '../actions/decks.js'
@@ -49,8 +49,8 @@ class AddCard extends Component {
     render(){
         const {title}=this.props.route.params
       return (        
-          <TouchableWithoutFeedback>
-          <KeyboardAvoidingView  {...Platform.OS==='ios' ? behavior='padding' : null}  style={styles.ViewContent}>
+          <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
+          <KeyboardAvoidingView  behavior= {Platform.OS==='ios' ? 'padding' : 'height'}  style={styles.ViewContent}>
               <View style={styles.ViewContentTexts}>
                 {Platform.OS==='ios' 
                     ? <MaterialCommunityIcons name="cards" size={40} color="black" /> 
@@ -104,7 +104,7 @@ const styles=StyleSheet.create({
        justifyContent:'flex-end'
     },
     Buttons:{ 
-        marginBottom: 30,
+        marginBottom: Platform.OS==='ios' ? 30 : 20,
         borderWidth:2,
         borderColor:'#227CA7',
         backgroundColor:'#227CA7',
