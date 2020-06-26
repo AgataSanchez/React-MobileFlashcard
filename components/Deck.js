@@ -1,16 +1,17 @@
 import React, {Component} from 'react'
-import { StyleSheet, Text, View, TouchableOpacity } from 'react-native'
-import {MaterialCommunityIcons, MaterialIcons} from '@expo/vector-icons'
+import { StyleSheet, Text, View, TouchableOpacity, Platform } from 'react-native'
+import {MaterialCommunityIcons, MaterialIcons, Ionicons} from '@expo/vector-icons'
 import {removeADeck} from '../actions/decks.js'
 import {removeDeck} from '../utils/helpers.js'
 import { connect } from 'react-redux'
-import { color } from 'react-native-reanimated'
 
 function AddCard({props}){
     return(
     <TouchableOpacity onPress={()=>props.navigation.navigate('Add Card', {title: props.route.params.title})}
     style={[styles.Buttons, {borderColor: '#72BFE1', backgroundColor: '#72BFE1'}]}>
-        <Text style={styles.ButtonTexts}><MaterialCommunityIcons name="cards" size={24} color="white" />Add Card</Text>
+        <Text style={styles.ButtonTexts}>{Platform.OS==='ios' 
+        ? <MaterialCommunityIcons name="cards" size={24} color="white" />
+        : <Ionicons name="md-images" size={24} color="white" />}Add Card</Text>
     </TouchableOpacity>
     )
 }
@@ -18,7 +19,9 @@ function StartQuiz({props}){
     return(
         <TouchableOpacity onPress={()=>props.navigation.navigate('Quiz', {title: props.route.params.title})}
         style={[styles.Buttons,  {borderColor: '#59EEAA', backgroundColor: '#59EEAA'}]}>
-            <Text style={styles.ButtonTexts}><MaterialIcons name="question-answer" size={24} color="white" />Start Quiz</Text>
+            <Text style={styles.ButtonTexts}>{Platform.OS==='ios' 
+            ? <MaterialIcons name="question-answer" size={24} color="white" />
+            : <Ionicons name="md-chatboxes" size={24} color="white" />}Start Quiz</Text>
         </TouchableOpacity>
     )
 }
@@ -26,7 +29,9 @@ function StartQuiz({props}){
 function RemoveDeck({onPress}){
     return(
     <TouchableOpacity onPress={onPress} style={[styles.Buttons,  {borderWidth:0}]}>
-        <Text style={{color:'red', fontSize:20}}><MaterialIcons name="delete" size={24} color="red" />Delete Deck</Text>
+        <Text style={{color:'red', fontSize:20}}>{Platform.OS==='ios' 
+        ? <MaterialIcons name="delete" size={24} color="red" />
+        : <Ionicons name="md-trash" size={24} color="red" />}Delete Deck</Text>
     </TouchableOpacity>
     )
 }

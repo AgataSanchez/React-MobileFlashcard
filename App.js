@@ -10,21 +10,22 @@ import {Provider} from 'react-redux'
 import reducer from './reducers/decks.js'
 import middlweare from './middleware'
 import { NavigationContainer} from '@react-navigation/native'
-import { createBottomTabNavigator  } from '@react-navigation/bottom-tabs'
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
 import { createStackNavigator} from '@react-navigation/stack'
+import {createMaterialTopTabNavigator} from '@react-navigation/material-top-tabs'
 
 import {MaterialIcons, Ionicons} from '@expo/vector-icons'
 import Constants  from 'expo-constants'
 
 
-const Tab=createBottomTabNavigator()
+const Tab= Platform.OS==='ios' ? createBottomTabNavigator() : createMaterialTopTabNavigator()
 
 const Stack = createStackNavigator()
 
 
 function DeckStatusBar({backgroundColor, ...props}){
   return (
-    <View style={{ backgroundColor, height: Constants.statusBarHeight }}>
+    <View style={{ backgroundColor, height: Constants.statusBarHeight}}>
       <StatusBar translucent backgroundColor={backgroundColor} {...props} width={20}/>
     </View>
   )
@@ -38,13 +39,19 @@ function Home(){
         inactiveTintColor: 'black',
         labelStyle:{
           fontSize:15
+        },
+        indicatorStyle:{
+          backgroundColor: '#72BFE1'
         }
       }} 
         >
       <Tab.Screen name='Decks' component={Dashboard} options={{
-        tabBarIcon:({color})=><MaterialIcons name="dashboard" size={30} color={color} /> }}/>
+        tabBarIcon:({color})=><MaterialIcons name="dashboard" size={30} color={color} /> 
+     }}
+      />
       <Tab.Screen name='Add Deck' component={NewDeck} options={{
-        tabBarIcon:({color})=><Ionicons name="ios-add" size={30} color={color} /> }}/>
+        tabBarIcon:({color})=><Ionicons name="ios-add" size={30} color={color} />}}
+      />
     </Tab.Navigator>
   )
 }

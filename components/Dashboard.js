@@ -1,6 +1,5 @@
 import React, {Component} from 'react'
 import { StyleSheet, Text, ScrollView, TouchableOpacity } from 'react-native'
-import {IonIcons} from '@expo/vector-icons'
 import {getDecks} from '../utils/helpers.js'
 import { connect } from 'react-redux'
 import {receiveDecks} from '../actions/decks.js'
@@ -20,7 +19,7 @@ class Dashboard extends Component {
     render(){
       const decks=this.props.decks
       return (        
-          <ScrollView contentContainerStyle={{flex:1, paddingTop:20, justifyContent:'start'}}>
+          <ScrollView contentContainerStyle={{flex:1, paddingTop:20}}>
             {Object.keys(decks).map((deckT)=>{
                 return(
                     <TouchableOpacity value={deckT} key={deckT} onPress={()=>this.handlePress(deckT)}  style={{paddingBottom:20, alignItems:'center'}}>

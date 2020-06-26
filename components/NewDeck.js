@@ -1,14 +1,16 @@
 import React, {Component} from 'react'
 import {connect} from 'react-redux'
-import { StyleSheet, Text, View, TextInput, TouchableOpacity, KeyboardAvoidingView } from 'react-native'
-import {FontAwesome, MaterialIcons} from '@expo/vector-icons'
+import { StyleSheet, Text, View, TextInput, TouchableOpacity, KeyboardAvoidingView, Platform, TouchableWithoutFeedback } from 'react-native'
+import {FontAwesome, MaterialIcons, Ionicons} from '@expo/vector-icons'
 import {saveDeckTitle, getDeck} from '../utils/helpers.js'
 import {addDeck} from '../actions/decks.js'
 
 function CreateBtn({onPress, disabled}){
     return(
     <TouchableOpacity onPress={onPress} disabled={disabled} style={[styles.Buttons, {opacity: disabled? 0.3 : 1}]}>
-        <Text style={styles.ButtonTexts}><MaterialIcons name="library-add" size={24} color="white" />Create Deck</Text>
+        <Text style={styles.ButtonTexts}>{Platform.OS==='ios' 
+        ? <MaterialIcons name="library-add" size={24} color="white" />
+        : <Ionicons name="md-albums" size={24} color="white" />}Create Deck</Text>
     </TouchableOpacity>
     )
 }
@@ -41,9 +43,11 @@ class NewDeck extends Component {
     }
     render(){
       return (        
-        
-          <KeyboardAvoidingView behavior='padding' style={styles.ViewContent}>
-            <Text style={styles.Texts}>What is the title of your new deck <FontAwesome name="question" size={40} color="black" /> </Text>
+        <TouchableWithoutFeedback>
+          <KeyboardAvoidingView {...Platform.OS==='ios' ? behavior='padding' : null} style={styles.ViewContent}>
+            <Text style={styles.Texts}>What is the title of your new deck {Platform.OS==='ios' 
+            ? <FontAwesome name="question" size={40} color="black" />
+            : <Ionicons name="md-help" size={24} color="black" />} </Text>
             <View style={{alignItems:'center'}}>
                 <TextInput style={styles.InputTexts}placeholder='Deck Title' onChangeText={text=>this.handleChange(text)} value={this.state.value} />
             </View>
@@ -51,7 +55,7 @@ class NewDeck extends Component {
                 <CreateBtn onPress={this.createDeck} disabled={this.state.value===''}/>
             </View>
           </KeyboardAvoidingView>
-        
+        </TouchableWithoutFeedback>
        
       );
     }

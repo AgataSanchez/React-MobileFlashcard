@@ -1,5 +1,5 @@
 import React, {Component} from 'react'
-import { StyleSheet, Text, View, TouchableOpacity } from 'react-native'
+import { StyleSheet, Text, View, TouchableOpacity, Platform } from 'react-native'
 import {Ionicons, MaterialCommunityIcons, FontAwesome} from '@expo/vector-icons'
 import { connect } from 'react-redux'
 
@@ -11,6 +11,19 @@ function CustomBtn({onPress, textBtn}){
         <Text style={[styles.ButtonTexts, {color: textBtn==='Answer' || textBtn==='Question' ? '#4C6AF0' : 'white'}]}>{textBtn}</Text>
     </TouchableOpacity>
     )
+}
+function Icon(props){
+   
+    return(
+    props.percentage<40 ? (Platform.OS==='ios' 
+    ? <Ionicons name="ios-sad" size={100} color={props.color} />
+    : <Ionicons name="md-sad" size={100} color={props.color} />): props.percentage<70 
+    ? <FontAwesome name="meh-o" size={100} color={props.color} /> 
+    : (Platform.OS==='ios' ? <Ionicons name="ios-happy" size={100} color={props.color} />
+        : <Ionicons name="md-happy" size={100} color={props.color} />
+    )
+    )
+    
 }
 class Quiz extends Component {
     state={
@@ -56,11 +69,13 @@ class Quiz extends Component {
         const total=questions.length
         let percentage=((this.state.correct/total)*100).toFixed(0)
         let color=percentage<40 ? "#F04C65": percentage<70 ? "#6ECDC0" : "#6ECD7A"
-       
+        
         if(this.props.questions.length===0){
             return (
                 <View style={[styles.ViewContent, {justifyContent: 'center'}]}>
+                    {Platform.OS==='ios' ?
                     <MaterialCommunityIcons name="emoticon-sad-outline" size={50} color="#6ECDC0" />
+                    :<Ionicons name="md-sad" size={50} color="#6ECDC0" />}
                     <Text style={styles.Texts}>Sorry, you cannot take a quiz because there are no cards in the deck!</Text>
                     <Text style={styles.Texts}> Go back and add it </Text>
                 </View>
@@ -70,13 +85,11 @@ class Quiz extends Component {
             return(
                 <View style={[styles.ViewContent, {justifyContent: 'space-between'}]}>
                     <View style={[styles.ViewContentTexts, {justifyContent:'space-between'}]}>
-                        <Text style={styles.Texts}>Congratulations! You have finished the quiz. Its percentage of correct answers
-                            has been of a:</Text>
-                        <Text style={[styles.Texts, {fontSize:100, color:color}]}> {percentage}<FontAwesome name="percent" size={100} color={color}/></Text>
-                        {percentage<40 ? <Ionicons name="ios-sad" size={100} color={color} />: percentage<70 
-                        ? <FontAwesome name="meh-o" size={100} color={color} />
-                        :<Ionicons name="ios-happy" size={100} color={color} />
-                        }
+                        <Text style={styles.Texts}>Congratulations! You have finished the quiz. 
+                        Its percentage of correct answers has been of a:</Text>
+                        <Text style={[styles.Texts, {fontSize:100, color:color}]}> 
+                        {percentage}<FontAwesome name="percent" size={100} color={color}/></Text>
+                        <Icon color={color} percentage={percentage}></Icon>
                         
                     </View>
                 </View>

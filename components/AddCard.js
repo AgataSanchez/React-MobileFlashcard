@@ -1,14 +1,16 @@
 import React, {Component} from 'react'
 import {connect} from 'react-redux'
-import { StyleSheet, Text, View, TextInput, TouchableOpacity, KeyboardAvoidingView } from 'react-native'
-import { MaterialCommunityIcons, MaterialIcons, FontAwesome } from '@expo/vector-icons'
+import { StyleSheet, Text, View, TextInput, TouchableOpacity, KeyboardAvoidingView, Platform, TouchableWithoutFeedback } from 'react-native'
+import { MaterialCommunityIcons, MaterialIcons, FontAwesome, Ionicons } from '@expo/vector-icons'
 import {addCardToDeck} from '../utils/helpers.js'
 import {addCardDeck} from '../actions/decks.js'
 
 function SubmitBtn({onPress, disabled}){
     return(
     <TouchableOpacity onPress={onPress} disabled={disabled} style={[styles.Buttons, {opacity: disabled? 0.3 : 1}]}>
-        <Text style={styles.ButtonTexts}><FontAwesome name="save" size={24} color="white" /> Submit</Text>
+        <Text style={styles.ButtonTexts}>{Platform.OS==='ios' 
+        ? <FontAwesome name="save" size={24} color="white" />
+        : <Ionicons name="md-save" size={24} color="white" />} Submit</Text>
     </TouchableOpacity>
     )
 }
@@ -47,13 +49,19 @@ class AddCard extends Component {
     render(){
         const {title}=this.props.route.params
       return (        
-          <KeyboardAvoidingView  behavior='padding' style={styles.ViewContent}>
+          <TouchableWithoutFeedback>
+          <KeyboardAvoidingView  {...Platform.OS==='ios' ? behavior='padding' : null}  style={styles.ViewContent}>
               <View style={styles.ViewContentTexts}>
-                  <MaterialCommunityIcons name="cards" size={40} color="black" /> 
-                  <Text style={styles.Texts}> Add a new card to the {title} deck</Text>
+                {Platform.OS==='ios' 
+                    ? <MaterialCommunityIcons name="cards" size={40} color="black" /> 
+                    : <Ionicons style={{position:'absolute'}} name="md-images" size={40} color="black" />
+                }
+                <Text style={styles.Texts}> Add a new card to the {title} deck</Text>
               </View>
               <View style={styles.ViewContentTexts}>
-                  <MaterialIcons style={{marginRight:10, marginTop: 5}}name="question-answer" size={50} color="black" />
+                  {Platform.OS==='ios' 
+                  ? <MaterialIcons style={{marginRight:10, marginTop: 5}} name="question-answer" size={50} color="black" />
+                    : <Ionicons style={{marginRight:10, marginTop: 5}} name="md-chatboxes" size={50} color="black" />}
                   <View style={styles.ViewTexts}>
                     <TextInput style={styles.InputTexts} placeholder='Question' onChangeText={text=>this.handleChange(text, 'q')} value={this.state.question} />
                     <TextInput style={styles.InputTexts} placeholder='Answer' onChangeText={text=>this.handleChange(text, 'a')} value={this.state.answer} />
@@ -61,7 +69,7 @@ class AddCard extends Component {
               </View>
               <SubmitBtn onPress={this.submitCard} disabled={this.state.question==='' || this.state.answer===''}/>
           </KeyboardAvoidingView>
-       
+       </TouchableWithoutFeedback>
       );
     }
   }
