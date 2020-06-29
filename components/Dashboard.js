@@ -1,5 +1,5 @@
 import React, {Component, useRef} from 'react'
-import { Animated, Text, ScrollView, TouchableOpacity } from 'react-native'
+import { Animated, Text, ScrollView, TouchableOpacity, View } from 'react-native'
 import {getDecks} from '../utils/helpers.js'
 import { connect } from 'react-redux'
 import {receiveDecks} from '../actions/decks.js'
@@ -38,6 +38,11 @@ class Dashboard extends Component {
      
       return (        
           <ScrollView contentContainerStyle={{flex:1, paddingTop:20}}>
+              {Object.keys(decks).length===0 && (
+              <View style={{flex:1, justifyContent:'center', alignItems:'center'}}>
+                  <Text style={{fontSize:25}}>There are no decks. Add one!</Text>
+              </View>)
+              }
             {Object.keys(decks).map((deckT)=>{
                  const bounceValue= new Animated.Value(1)
                 return(

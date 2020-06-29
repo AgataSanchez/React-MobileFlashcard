@@ -100,15 +100,17 @@ class Quiz extends Component {
             this.handleNotification()
             return(
                 <View style={[styles.ViewContent, {justifyContent: 'center'}]}>
-                    <View style={[styles.ViewContentTexts, {justifyContent:'center'}]}>
+                    <View style={[styles.ViewContentTexts]}>
                         <Text style={styles.Texts}>Congratulations! You have finished the quiz. 
                         Its percentage of correct answers has been of a:</Text>
                         <Text style={[styles.Texts, {fontSize:100, color:color}]}> 
                         {percentage}<FontAwesome name="percent" size={100} color={color}/></Text>
                         <Icon color={color} percentage={percentage}></Icon>
                     </View>
-                    <CustomBtn onPress={()=>this.props.navigation.goBack()} value='Back' textBtn='Back to Deck'></CustomBtn>
-                    <CustomBtn onPress={this.restartQuiz} value='Restart' textBtn='Restart Quiz'></CustomBtn>
+                    <View style={styles.ViewButtons}>
+                        <CustomBtn onPress={()=>this.props.navigation.goBack()} value='Back' textBtn='Back to Deck'></CustomBtn>
+                        <CustomBtn onPress={this.restartQuiz} value='Restart' textBtn='Restart Quiz'></CustomBtn>
+                    </View>
                 </View>
             )
         }

@@ -1,6 +1,7 @@
 # React-MobileFlashcard
 
-The objective of this application is to create and display decks and cards. Each deck will have several cards that will be answered in a 'Quiz'. In turn, within a deck you can create cards with a question and an answer and in the 'Quiz' you can see these cards and point to 'Correct' if you answered the question correctly (previously seeing the answer) or 'Incorrect' if not answered correctly. Finally, the percentage of hits of said 'Quiz' will be indicated.
+The objective of this application is to create and display decks and cards. Each deck will have several cards that will be answered in a 'Quiz'. In turn, within a deck you can create cards with a question and an answer and in the 'Quiz' you can see these cards and point to 'Correct' if you answered the question correctly (previously seeing the answer) or 'Incorrect' if not answered correctly. Finally, the percentage of hits of said 'Quiz' will be indicated. 
+In addition, the application will send you notifications if you have not yet studied that day
 
 
 ## TL;DR
@@ -9,6 +10,7 @@ To get started developing right away:
    * install expo application in your phone
    * start the development server with `npm start` or `yarn start`
    * scan the QR code and open it in expo
+
 ## What You're Getting
 ```bash
 ├── README.md - This file.
@@ -64,7 +66,7 @@ This collection represents the deck currently in the backend in your app.
 
 Method Signature:
 ```js
-    _saveDeckTitle(title)
+    saveDeckTitle(title)
 ```
 title: <String> The title of the deck
 Returns a Promise which resolves to a JSON object containing the response data of request saveDeckTitle
@@ -73,7 +75,7 @@ Returns a Promise which resolves to a JSON object containing the response data o
 
 Method Signature:
 ```js
-    _removeDeck(title)
+    removeDeck(title)
 ```
 title: <String> The title of the deck
 Returns a Promise which resolves to a JSON object containing the response data of request removeDeck
@@ -88,13 +90,13 @@ title: <String> The title of the deck
 card: <Object> The card with the text of the question and answer
 Returns a Promise which resolves to a JSON object containing the response data of request addCardToDeck
 
-### `clearNotification`
+### `clearLocalNotification`
 
 Method Signature:
 ```js
-    clearNotification()
+    clearLocalNotification()
 ```
-Returns a Promise which resolves of request clearNotification
+Returns a Promise which resolves of request clearLocalNotification
 
 ### `setLocalNotification`
 
@@ -102,6 +104,7 @@ Method Signature:
 ```js
     setLocalNotification()
 ```
-
+### Platforms
+The platforms supported by the application are Android and iOs. Both have been tested with Expo Client
 ### Create React App
 This project was bootstrapped with [Create React Native App](https://github.com/expo/create-react-native-app).
