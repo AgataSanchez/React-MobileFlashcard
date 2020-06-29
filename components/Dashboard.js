@@ -1,24 +1,33 @@
-import React, {Component} from 'react'
+import React, {Component, useRef} from 'react'
 import { Animated, Text, ScrollView, TouchableOpacity } from 'react-native'
 import {getDecks} from '../utils/helpers.js'
 import { connect } from 'react-redux'
 import {receiveDecks} from '../actions/decks.js'
 
+
+function CustomOptions({onPress, deckT, bounceValue, length}){
+    
+    return(
+    <TouchableOpacity value={deckT} onPress={onPress} style={{paddingBottom:20, alignItems:'center'}}>
+        <Animated.Text style={ {fontSize: 25, transform:[{scale:bounceValue}]}}>{deckT}</Animated.Text>
+        <Animated.Text style={{color: '#72BFE1', fontSize:15, transform:[{scale:bounceValue}]}}>
+        {length} cards</Animated.Text>
+    </TouchableOpacity>
+    )
+}
 class Dashboard extends Component {
     
-    state={
-        bounceValue: new Animated.Value(1),
-    }
+    
     componentDidMount(){
         getDecks().then((decks)=> {
             this.props.dispatch(receiveDecks(decks))
         })
        
     }
-    handlePress(title){
+    handlePress(title, bounceValue){
         Animated.sequence([
-            Animated.timing(this.state.bounceValue, {toValue:1.04, duration:200}),
-            Animated.spring(this.state.bounceValue, {toValue:1, friction:4})]).start(({finished})=>{
+            Animated.timing(bounceValue, {toValue:1.04, duration:200}),
+            Animated.spring(bounceValue, {toValue:1, friction:4})]).start(({finished})=>{
             //Navigate to 'Deck'
             this.props.navigation.navigate('Deck', {title:title})
         })
@@ -26,16 +35,19 @@ class Dashboard extends Component {
     }
     render(){
       const decks=this.props.decks
+     
       return (        
           <ScrollView contentContainerStyle={{flex:1, paddingTop:20}}>
             {Object.keys(decks).map((deckT)=>{
+                 const bounceValue= new Animated.Value(1)
                 return(
-                    <TouchableOpacity value={deckT} key={deckT} onPress={()=>this.handlePress(deckT)}
-                      style={{paddingBottom:20, alignItems:'center'}}>
-                        <Animated.Text style={ {fontSize: 25, transform:[{scale:this.state.bounceValue}]}}>{deckT}</Animated.Text>
-                        <Animated.Text style={{color: '#72BFE1', fontSize:15, transform:[{scale:this.state.bounceValue}]}}>
-                            {decks[deckT].questions!==undefined ? decks[deckT].questions.length: 0} cards</Animated.Text>
-                    </TouchableOpacity>
+                    <CustomOptions 
+                    key={deckT}
+                    deckT={deckT}
+                    onPress={()=>this.handlePress(deckT, bounceValue)} 
+                    bounceValue={bounceValue}
+                    length={decks[deckT].questions!==undefined ? decks[deckT].questions.length: 0}
+                    />
                 )
             })}
           </ScrollView>

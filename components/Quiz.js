@@ -7,8 +7,10 @@ import {clearLocalNotification, setLocalNotification} from '../utils/helpers.js'
 function CustomBtn({onPress, textBtn}){
     return(
         <TouchableOpacity onPress={onPress} style={[textBtn==='Answer' || textBtn==='Question' ? null : styles.Buttons,
-        { borderColor: textBtn==='Correct' ? '#6ECD7A': textBtn==='Incorrect' ? '#F04C65' : null ,
-        backgroundColor:textBtn==='Correct' ? '#6ECD7A': textBtn==='Incorrect' ? '#F04C65' : null }]}>
+        { borderColor: textBtn==='Correct' ? '#6ECD7A': textBtn==='Incorrect' ? '#F04C65' : textBtn==='Back to Deck' 
+        ? '#B7DCDF': textBtn==='Restart Quiz' ? '#7CF6B5' : null,
+        backgroundColor:textBtn==='Correct' ? '#6ECD7A': textBtn==='Incorrect' ? '#F04C65' : textBtn==='Back to Deck' 
+        ? '#B7DCDF': textBtn==='Restart Quiz' ? '#7CF6B5' : null }]}>
         <Text style={[styles.ButtonTexts, {color: textBtn==='Answer' || textBtn==='Question' ? '#4C6AF0' : 'white'}]}>{textBtn}</Text>
     </TouchableOpacity>
     )
@@ -66,6 +68,14 @@ class Quiz extends Component {
         })
         
     }
+    restartQuiz=()=>{
+        this.setState({
+            numberQ:1,
+            textQorA:this.props.questions.length===0 ? '' : this.props.questions[0].question,
+            correct:0,
+            textBtn:'Answer'
+        })
+    }
     handleNotification=()=>{
         clearLocalNotification().then(setLocalNotification)
     }
@@ -96,8 +106,9 @@ class Quiz extends Component {
                         <Text style={[styles.Texts, {fontSize:100, color:color}]}> 
                         {percentage}<FontAwesome name="percent" size={100} color={color}/></Text>
                         <Icon color={color} percentage={percentage}></Icon>
-                        
                     </View>
+                    <CustomBtn onPress={()=>this.props.navigation.goBack()} value='Back' textBtn='Back to Deck'></CustomBtn>
+                    <CustomBtn onPress={this.restartQuiz} value='Restart' textBtn='Restart Quiz'></CustomBtn>
                 </View>
             )
         }
